@@ -14,13 +14,13 @@ OPENWEATHER_API_KEY = os.getenv("OPENWEATHER_API_KEY")
 
 
 def get_uv_risk_level(uvi: float) -> str:
-    if uvi < 3:
+    if uvi <= 2:
         return "Low"
-    elif uvi < 6:
+    elif uvi <= 5:
         return "Moderate"
-    elif uvi < 8:
+    elif uvi <= 8:
         return "High"
-    elif uvi < 11:
+    elif uvi <= 11:
         return "Very High"
     return "Extreme"
 

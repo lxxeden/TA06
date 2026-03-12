@@ -6,13 +6,13 @@ function buildAdvice(data) {
       return "Weather data is available, but UV data is currently unavailable. Basic sun protection is still recommended for longer outdoor time.";
     }
   
-    if (uvi < 3) {
+    if (uvi <= 2) {
       return "UV is low. Basic protection is usually enough, but sunglasses are still a good idea.";
-    } else if (uvi < 6) {
+    } else if (uvi <= 5) {
       return "UV is moderate. Use sunscreen and think about shade during longer outdoor time.";
-    } else if (uvi < 8) {
+    } else if (uvi <= 8) {
       return "UV is high. Wear sunscreen, a hat, sunglasses, and try to reduce direct exposure.";
-    } else if (uvi < 11) {
+    } else if (uvi <= 11) {
       return "UV is very high. Strong protection is important and shade breaks are recommended.";
     }
     return "UV is extreme. Limit direct sun exposure where possible and use full protection.";
