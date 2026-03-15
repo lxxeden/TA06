@@ -6,13 +6,13 @@ function buildAdvice(data) {
       return "Weather data is available, but UV data is currently unavailable. Basic sun protection is still recommended for longer outdoor time.";
     }
   
-    if (uvi <= 2) {
+    if (uvi < 3) {
       return "UV is low. Basic protection is usually enough, but sunglasses are still a good idea.";
-    } else if (uvi <= 5) {
+    } else if (uvi < 6) {
       return "UV is moderate. Use sunscreen and think about shade during longer outdoor time.";
-    } else if (uvi <= 8) {
+    } else if (uvi < 8) {
       return "UV is high. Wear sunscreen, a hat, sunglasses, and try to reduce direct exposure.";
-    } else if (uvi <= 11) {
+    } else if (uvi < 11) {
       return "UV is very high. Strong protection is important and shade breaks are recommended.";
     }
     return "UV is extreme. Limit direct sun exposure where possible and use full protection.";
@@ -29,7 +29,23 @@ function buildAdvice(data) {
     document.getElementById("resultWind").textContent = `${data.wind_speed} m/s`;
     document.getElementById("resultUvi").textContent =
       data.uvi === null || data.uvi === undefined ? "--" : data.uvi;
-    document.getElementById("resultUvRisk").textContent = data.uv_risk || "--";
+      const uvRiskElement = document.getElementById("resultUvRisk");
+      const uvRisk = data.uv_risk || "--";
+      
+      uvRiskElement.textContent = uvRisk;
+      uvRiskElement.className = "";
+      
+      if (uvRisk === "Low") {
+        uvRiskElement.classList.add("uv-low");
+      } else if (uvRisk === "Moderate") {
+        uvRiskElement.classList.add("uv-moderate");
+      } else if (uvRisk === "High") {
+        uvRiskElement.classList.add("uv-high");
+      } else if (uvRisk === "Very High") {
+        uvRiskElement.classList.add("uv-very-high");
+      } else if (uvRisk === "Extreme") {
+        uvRiskElement.classList.add("uv-extreme");
+      }
   
     const icon = document.getElementById("weatherIcon");
     if (data.icon) {
@@ -45,7 +61,22 @@ function buildAdvice(data) {
     const badge = document.getElementById("heroUvBadge");
     badge.textContent =
       data.uvi === null || data.uvi === undefined ? "UV --" : `UV ${data.uvi}`;
-  
+    
+    // 先恢复成基础圆形样式
+    badge.className = "uv-badge";
+    
+    // 再根据 UV risk 叠加颜色 class
+    if (uvRisk === "Low") {
+      badge.classList.add("uv-badge-low");
+    } else if (uvRisk === "Moderate") {
+      badge.classList.add("uv-badge-moderate");
+    } else if (uvRisk === "High") {
+      badge.classList.add("uv-badge-high");
+    } else if (uvRisk === "Very High") {
+      badge.classList.add("uv-badge-very-high");
+    } else if (uvRisk === "Extreme") {
+      badge.classList.add("uv-badge-extreme");
+    }
     document.getElementById("heroReminder").textContent = advice;
     document.getElementById("statusBox").textContent = "Weather and UV data loaded successfully.";
   }
