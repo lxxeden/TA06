@@ -86,7 +86,7 @@ function updateWeatherUI(data) {
   } else if (uvRisk === "Extreme") {
     badge.classList.add("uv-badge-extreme");
   }
-  document.getElementById("heroReminder").textContent = advice;
+  document.getElementById("heroReminder").innerHTML = advice;
   document.getElementById("statusBox").textContent = "Weather and UV data loaded successfully.";
 }
 
