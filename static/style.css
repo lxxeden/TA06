@@ -187,19 +187,28 @@
   }
   
   .uv-badge {
-    display: inline-flex;
+    display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
+  
     width: 120px;
     height: 120px;
+  
     border-radius: 50%;
+  
     background: radial-gradient(circle at 30% 30%, #fde68a, #f59e0b);
+  
     color: white;
-    font-size: 1.8rem;
     font-weight: 800;
+    font-size: 32px;
+  
+    text-align: center;
+    line-height: 1.2;
+  
     margin-bottom: 18px;
   }
-  
+
   .hero-card h3 {
     font-size: 1.35rem;
     margin-bottom: 10px;
@@ -518,3 +527,63 @@
       align-items: flex-start;
     }
   }
+
+  .uv-low {
+    background-color: #22c55e;
+    color: white;
+    border-radius: 8px;
+    padding: 4px 10px;
+    display: inline-block;
+  }
+  
+  .uv-moderate {
+    background-color: #eab308;
+    color: white;
+    border-radius: 8px;
+    padding: 4px 10px;
+    display: inline-block;
+  }
+  
+  .uv-high {
+    background-color: #f97316;
+    color: white;
+    border-radius: 8px;
+    padding: 4px 10px;
+    display: inline-block;
+  }
+  
+  .uv-very-high {
+    background-color: #ef4444;
+    color: white;
+    border-radius: 8px;
+    padding: 4px 10px;
+    display: inline-block;
+  }
+  
+  .uv-extreme {
+    background-color: #a855f7;
+    color: white;
+    border-radius: 8px;
+    padding: 4px 10px;
+    display: inline-block;
+  }
+
+.uv-badge-low {
+  background: #22c55e !important;
+}
+
+.uv-badge-moderate {
+  background: #eab308 !important;
+}
+
+.uv-badge-high {
+  background: #f97316 !important;
+}
+
+.uv-badge-very-high {
+  background: #ef4444 !important;
+}
+
+.uv-badge-extreme {
+  background: #a855f7 !important;
+}
