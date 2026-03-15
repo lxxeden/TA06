@@ -6,19 +6,19 @@ function buildAdvice(data) {
     return "Weather data is available, but UV data is currently unavailable. Basic sun protection is still recommended for longer outdoor time.";
   }
 
-  if (uvi < 3) {
+  if (uvi <= 2) {
     return `<strong>Clothing recommendation</strong><br>
     UV is low. Basic protection is usually enough, but sunglasses are still a good idea.`;
 
-  } else if (uvi < 6) {
+  } else if (uvi <= 5) {
     return `Clothing recommendation:<br>
 UV is moderate. Wear sunscreen, light clothing, and consider staying in shade during long outdoor time.`;
 
-  } else if (uvi < 8) {
+  } else if (uvi <= 7) {
     return `Clothing recommendation:<br>
 UV is high. Wear sunscreen, a hat, sunglasses, and protective clothing. Reduce direct sun exposure.`;
 
-  } else if (uvi < 11) {
+  } else if (uvi <= 10) {
     return `Clothing recommendation:<br>
 UV is very high. Strong sun protection needed. Wear long sleeves, hat, sunglasses, and stay in shade when possible.`;
   }
