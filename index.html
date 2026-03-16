@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SunSafe Weather & UV Checker</title>
+  <link rel="stylesheet" href="static/style.css">
+</head>
+<body>
+  <div class="topbar">
+    <div class="container">
+      <div>Weather and UV awareness for everyday life</div>
+      <div>Live weather, location-based UV, and better outdoor planning</div>
+    </div>
+  </div>
+
+  <header class="navbar">
+    <div class="container nav-inner">
+      <a href="#home" class="logo">Sun<span>Safe</span></a>
+      <nav class="nav-links">
+        <a href="#about">About</a>
+        <a href="#tips">Protection Tips</a>
+        <a href="#tool">Weather & UV Tool</a>
+        <a href="#audiences">For Everyone</a>
+        <a href="#contact">Contact</a>
+        <a href="#tool" class="btn btn-primary">Check Weather Now</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+      <div class="container hero-grid">
+        <div>
+          <div class="eyebrow">Live Weather & UV</div>
+          <h1>Check local weather and UV before you head outside</h1>
+          <p>
+            This website helps users quickly view live weather conditions, UV Index,
+            and simple outdoor protection advice based on their city or current location.
+          </p>
+          <div class="hero-actions">
+            <a href="#tool" class="btn btn-primary">Open the Live Tool</a>
+            <a href="#tips" class="btn btn-outline">See Protection Tips</a>
+          </div>
+          <p><strong>Project goal:</strong> combine a clean public-health style interface with real weather and UV data.</p>
+        </div>
+
+        <div class="hero-card">
+          <div class="uv-badge" id="heroUvBadge">UV --</div>
+          <h3>Today's quick reminder</h3>
+          <p id="heroReminder">
+            Use the tool below to check current weather, UV risk, and practical outdoor advice for your area.
+          </p>
+          <div class="mini-grid">
+            <div class="mini-item">Weather</div>
+            <div class="mini-item">UV</div>
+            <div class="mini-item">Advice</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="about">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <h2>About this website</h2>
+            <p>This project now uses Flask + JavaScript + OpenWeather API, while keeping the original polished homepage layout.</p>
+          </div>
+        </div>
+        <div class="cards">
+          <article class="card">
+            <h3>Live weather</h3>
+            <p>Users can enter a city name to get current temperature, humidity, wind speed, and weather conditions.</p>
+            <a href="#tool">Try the tool →</a>
+          </article>
+          <article class="card">
+            <h3>Automatic location</h3>
+            <p>Users can allow browser geolocation and instantly check weather and UV for their current location.</p>
+            <a href="#tool">Use my location →</a>
+          </article>
+          <article class="card">
+            <h3>UV awareness</h3>
+            <p>The app shows UV Index and a clear risk level so people can make better outdoor decisions.</p>
+            <a href="#tips">Read tips →</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="tips">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <h2>Protection tips</h2>
+            <p>These tips work together with the live tool and help users stay safer when UV exposure is higher.</p>
+          </div>
+        </div>
+        <div class="cards">
+          <article class="card">
+            <h3>Use sunscreen</h3>
+            <p>Apply sunscreen before going outside and reapply when needed, especially after sweating or swimming.</p>
+          </article>
+          <article class="card">
+            <h3>Wear protective items</h3>
+            <p>Hats, protective clothing, and sunglasses help reduce direct UV exposure during stronger sunlight hours.</p>
+          </article>
+          <article class="card">
+            <h3>Check conditions first</h3>
+            <p>Use real-time weather and UV information before outdoor activities so you can plan safely and comfortably.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="tool-box" id="tool">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <h2>Live Weather & UV Tool</h2>
+            <p>Search by city or use your current location to get real weather and UV information.</p>
+          </div>
+        </div>
+
+        <div class="tool-layout">
+          <div class="tool-panel">
+            <h3>Search by city</h3>
+            <label for="cityInput">Enter city name</label>
+            <input type="text" id="cityInput" placeholder="Example: Melbourne" />
+
+            <button class="btn btn-primary" onclick="getWeatherByCity()">Check Weather</button>
+            <button class="btn btn-outline second-btn" onclick="useMyLocation()">Use My Location</button>
+
+            <div class="result-box" id="statusBox">Weather result will appear here.</div>
+          </div>
+
+          <div class="tool-panel">
+            <h3>Live result</h3>
+            <div class="weather-card">
+              <div class="weather-top">
+                <div>
+                  <h4 id="resultCity">No location selected</h4>
+                  <p id="resultDesc">Weather description will appear here.</p>
+                </div>
+                <img id="weatherIcon" class="weather-icon" alt="Weather icon" src="" style="display:none;">
+              </div>
+
+              <div class="weather-grid">
+                <div class="weather-item">
+                  <span class="label">Temperature</span>
+                  <span id="resultTemp">-- °C</span>
+                </div>
+                <div class="weather-item">
+                  <span class="label">Feels Like</span>
+                  <span id="resultFeelsLike">-- °C</span>
+                </div>
+                <div class="weather-item">
+                  <span class="label">Humidity</span>
+                  <span id="resultHumidity">-- %</span>
+                </div>
+                <div class="weather-item">
+                  <span class="label">Wind Speed</span>
+                  <span id="resultWind">-- m/s</span>
+                </div>
+                <div class="weather-item">
+                  <span class="label">UV Index</span>
+                  <span id="resultUvi">--</span>
+                </div>
+                <div class="weather-item">
+                  <span class="label">UV Risk</span>
+                  <span id="resultUvRisk">--</span>
+                </div>
+              </div>
+
+              <div class="result-box advice-box" id="adviceBox">
+                Enter a city or use your current location to see outdoor advice.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="audiences">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <h2>Helpful for different groups</h2>
+            <p>This project can support students, workers, families, and anyone planning time outdoors.</p>
+          </div>
+        </div>
+        <div class="audience-grid">
+          <article class="audience-card">
+            <h3>Students</h3>
+            <p>Check weather and UV before walking to class, waiting at public transport stops, or joining outdoor activities.</p>
+          </article>
+          <article class="audience-card">
+            <h3>Workers</h3>
+            <p>Useful for outdoor jobs, work breaks, and commuting during hotter and sunnier parts of the day.</p>
+          </article>
+          <article class="audience-card">
+            <h3>Families</h3>
+            <p>Great for planning school pickup, playground visits, and weekend trips with clearer weather awareness.</p>
+          </article>
+          <article class="audience-card">
+            <h3>Sport groups</h3>
+            <p>Helps teams and individuals plan hydration, sun protection, and better timing for training sessions.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="banner">
+          <div>
+            <h2>Built with Flask, JavaScript, and OpenWeather API</h2>
+            <p>This version keeps the original attractive UI while upgrading the tool into a working local app.</p>
+          </div>
+          <a href="#contact" class="btn btn-primary">Go to contact section</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="contact">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <h3>SunSafe</h3>
+          <p>A Flask-based weather and UV awareness project with manual search and browser geolocation support.</p>
+        </div>
+        <div>
+          <h4>Sections</h4>
+          <a href="#about">About</a>
+          <a href="#tips">Protection Tips</a>
+          <a href="#tool">Weather & UV Tool</a>
+        </div>
+        <div>
+          <h4>Contact</h4>
+          <p>Email: xliu0193@student.monash.edu</p>
+          <p>Phone: +86 13201782023</p>
+        </div>
+      </div>
+      <div class="copyright">© 2026 SunSafe. Built as a learning project.</div>
+    </div>
+  </footer>
+
+  <script src="static/script.js"></script>
+</body>
+</html>
