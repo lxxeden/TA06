@@ -2,8 +2,10 @@ import os
 import requests
 from flask import Flask, render_template, jsonify, request, redirect, url_for, session
 from dotenv import load_dotenv
+from flask_cors import CORS
 
 load_dotenv()
+# CORS(app)
 
 app = Flask(__name__)
 
