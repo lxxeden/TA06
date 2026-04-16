@@ -24,7 +24,7 @@
         <div class="task-card" id="step1">
             <h2>What task do you need to complete?</h2>
             <label>Task Name</label>
-            <input type="text" id="taskName" placeholder="e.g., Write report, Clean room, Study for exam">
+            <input type="text" id="taskName" placeholder="e.g., Write report, Clean room, Study for exam" oninput="updateSizeLabel()">
             <div class="button-row">
                 <div></div>
                 <button onclick="goToStep(2)">Next</button>
@@ -35,7 +35,8 @@
         <div class="task-card hidden" id="step2">
             <h2>When is this due?</h2>
             <label>Due Date (Optional)</label>
-            <input type="date" id="dueDate">
+            <input type="date" id="dueDate" lang="en-GB" title="Please select a date in DD/MM/YYYY format" onchange="updateSizeLabel()">
+            <p class="date-hint">Expected format: DD/MM/YYYY</p>
             <p>Setting a due date helps with planning. You can skip this if unsure.</p>
             <div class="button-row">
                 <button class="secondary" onclick="goToStep(1)">Back</button>
@@ -60,9 +61,19 @@
             <div class="size-badge-wrap">
                 <p id="sizeLabel" class="size-badge">Medium task</p>
             </div>
+            <p id="sizeDescription" class="size-description">
+                This task looks manageable and may need a few clear steps.
+            </p>
             <div class="button-row">
                 <button class="secondary" onclick="goToStep(2)">Back</button>
                 <button onclick="generateSteps()">Generate Steps</button>
+            </div>
+
+            <div id="loadingBox" class="loading-box hidden">
+                <p id="loadingText">Generating personalised steps...</p>
+                <div class="loading-bar">
+                    <div class="loading-fill"></div>
+                </div>
             </div>
         </div>
 
@@ -148,14 +159,58 @@
         function updateSizeLabel() {
             const size = parseInt(document.getElementById("taskSize").value);
             const label = document.getElementById("sizeLabel");
+            const description = document.getElementById("sizeDescription");
+            const scales = document.querySelectorAll(".scale-row span");
+
+            const taskName = document.getElementById("taskName").value.trim();
+            const dueDate = document.getElementById("dueDate").value;
+
+            scales.forEach((span, index) => {
+                span.classList.remove("active-scale");
+                if (index + 1 === size) {
+                    span.classList.add("active-scale");
+                }
+            });
+
+            let sizeText = "";
+            let descriptionText = "";
 
             if (size <= 2) {
-                label.innerText = "Small task";
+                sizeText = "Small task";
+
+                if (taskName && dueDate) {
+                    descriptionText = `“${taskName}” looks like a smaller task. Since you already have a due date (${dueDate}), you may be able to finish it in a short session with just a few clear steps.`;
+                } else if (taskName) {
+                    descriptionText = `“${taskName}” looks like a smaller task. You may only need a few short and simple steps to get it done.`;
+                } else {
+                    descriptionText = "This looks like a simple task. You may only need a few short steps to finish it.";
+                }
+
             } else if (size === 3) {
-                label.innerText = "Medium task";
+                sizeText = "Medium task";
+
+                if (taskName && dueDate) {
+                    descriptionText = `“${taskName}” looks like a medium-sized task. With the due date in mind (${dueDate}), it may be easier to plan it in a few manageable steps and complete it steadily.`;
+                } else if (taskName) {
+                    descriptionText = `“${taskName}” looks manageable, but it may still feel easier if you break it into a few clear and focused steps.`;
+                } else {
+                    descriptionText = "This task looks manageable, but it may still be easier if broken into a few clear steps.";
+                }
+
             } else {
-                label.innerText = "Large task";
+                sizeText = "Large task";
+
+                if (taskName && dueDate) {
+                    descriptionText = `“${taskName}” looks like a bigger task. Because it has a due date (${dueDate}), breaking it into smaller parts can help reduce pressure and make it easier to start early.`;
+                } else if (taskName) {
+                    descriptionText = `“${taskName}” looks like a bigger task. Breaking it into smaller parts can reduce stress and help you make steady progress.`;
+                } else {
+                    descriptionText = "This looks like a bigger task. Breaking it into smaller parts can reduce stress and make it easier to start.";
+                }
             }
+
+            label.innerText = sizeText;
+            description.innerText = descriptionText;
         }
 
         function generateSteps() {
@@ -187,6 +242,8 @@
                 return;
             }
 
+            document.getElementById("loadingBox").classList.remove("hidden");
+            document.getElementById("loadingText").innerText = "Generating personalised steps...";
             fetch("/api/generate_steps_ai", {
                 method: "POST",
                 headers: {
@@ -247,6 +304,7 @@
                     step5TimeList.appendChild(div);
                 });
 
+                document.getElementById("loadingBox").classList.add("hidden");
                 updateFinalTime();
                 goToStep(4);
             })
@@ -287,6 +345,7 @@
             window.generatedSteps = [];
             goToStep(1);
         }
+        updateSizeLabel();
     </script>
 </body>
 </html>
